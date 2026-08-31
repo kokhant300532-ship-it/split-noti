@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercado Libre - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    </style>
+</head>
+<body class="bg-[#f5f5f5] text-gray-800 flex flex-col h-screen">
+
+    <header class="bg-[#ffe600] px-8 py-3 flex items-center justify-between border-b border-gray-200 shadow-sm">
+        <div class="flex items-center gap-3">
+            <div id="ui-logo-container" class="flex items-center gap-3">
+                <div class="bg-white p-2 rounded-full border border-gray-300 shadow-sm">
+                    <i class="fa-solid fa-handshake text-[#2d327d] text-2xl"></i>
+                </div>
+                <div class="flex flex-col leading-none">
+                    <span class="text-white font-black text-xl tracking-tight drop-shadow-sm">MERCADO</span>
+                    <span class="text-white font-black text-xl tracking-tight -mt-1 drop-shadow-sm">LIBRE</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button onclick="toggleControlPanel()" class="p-2 text-gray-700 hover:bg-yellow-400 rounded-full transition-colors" title="Settings">
+                <i class="fa-solid fa-gear text-xl"></i>
+            </button>
+            <button class="relative p-2 text-gray-700 hover:bg-yellow-400 rounded-full">
+                <i class="fa-regular fa-bell text-xl"></i>
+                <span class="absolute top-1 right-1 bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">3</span>
+            </button>
+            <button class="p-2 text-gray-700 hover:bg-yellow-400 rounded-full">
+                <i class="fa-regular fa-circle-question text-xl"></i>
+            </button>
+            <div class="w-9 h-9 bg-yellow-300 rounded-full flex items-center justify-center font-bold text-[#2d327d] border border-yellow-500">
+                m
+            </div>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <aside class="w-64 bg-white border-r border-gray-200 flex flex-col py-4 overflow-y-auto">
+            <nav class="space-y-1 px-3">
+                <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-md bg-yellow-400 text-gray-900">
+                    <i class="fa-solid fa-house w-5 text-center"></i> Inicio
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                    <i class="fa-regular fa-clipboard w-5 text-center"></i> Gestión de Tareas
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                    <i class="fa-solid fa-gift w-5 text-center"></i> Distribución de Bônos
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                    <i class="fa-solid fa-rotate-left w-5 text-center"></i> Registro de Reembolsos
+                </a>
+                
+                <div class="pt-4 pb-1">
+                    <hr class="border-gray-200">
+                </div>
+
+                <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                    <i class="fa-regular fa-file-lines w-5 text-center"></i> Liquidación de Demandas
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                    <i class="fa-solid fa-building-columns w-5 text-center"></i> Centro de Liquidación
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                    <i class="fa-solid fa-[#2d327d] fa-right-left w-5 text-center"></i> Transaccional
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                    <i class="fa-solid fa-chart-simple w-5 text-center"></i> Reportes Financieros
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium bg-[#0b2053] text-white rounded-md shadow-sm">
+                    <i class="fa-regular fa-address-card w-5 text-center"></i> Registro de Retiros
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-md">
+                    <i class="fa-solid fa-pie-chart w-5 text-center"></i> Gestión Financiera
+                </a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 overflow-y-auto p-8 space-y-6">
+            
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">¡Hola, <span id="ui-user-name">Name</span></h1>
+                    <p class="text-sm text-gray-500">Gestiona y realiza un seguimiento de la información de tu cuenta.</p>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="relative w-80">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="ui-search" value="1234567890" class="w-full pl-9 pr-4 py-2 bg-white border border-gray-300 rounded-full text-sm focus:outline-none focus:border-blue-500">
+                    </div>
+                    <button class="bg-[#ffe600] hover:bg-yellow-400 text-gray-900 font-semibold px-4 py-2 rounded-lg text-sm flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-download"></i> Exportar
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center gap-5">
+                    <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center text-2xl">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider block">Retiros Totales</span>
+                        <span id="ui-total-withdrawals" class="text-3xl font-bold text-gray-900 block my-1">3</span>
+                        <span class="text-xs text-gray-400">Retiros realizados hoy</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-center gap-5">
+                    <div class="w-14 h-14 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center text-2xl">
+                        <i class="fa-regular fa-clock"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider block">Tiempo Límite de Retiro</span>
+                        <span id="ui-time-limit" class="text-3xl font-bold text-gray-900 block my-1">15 minutos</span>
+                        <span class="text-xs text-gray-400">Límite por operación</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-[#0b2053] text-white text-xs font-medium">
+                            <th class="p-4 pl-6">Número de Cuenta</th>
+                            <th class="p-4">Monto a Retirar (MXN)</th>
+                            <th class="p-4">Nombre</th>
+                            <th class="p-4">Estado</th>
+                            <th class="p-4 text-right pr-6">Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ui-table-body" class="divide-y divide-gray-100 text-sm">
+                    </tbody>
+                </table>
+                <div class="p-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                    <span id="ui-pagination-info">Mostrando 1 a 4 de 4 registros</span>
+                    <div class="flex items-center gap-4">
+                        <span>Filas por página: <b>10</b></span>
+                        <span>1-4 de 4</span>
+                        <div class="flex gap-2">
+                            <button class="text-gray-400 cursor-not-allowed"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button class="text-gray-400 cursor-not-allowed"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ui-alert-box" class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-xl shadow-sm flex items-start justify-between">
+                <div class="flex items-start gap-4">
+                    <div class="text-red-500 text-2xl mt-0.5">
+                        <i class="fa-shield-triangle-exclamation fa-solid"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-900 text-base">Detalles de la Operación</h3>
+                        <p class="text-sm text-red-600 font-semibold mt-1">Observación: <span id="ui-alert-obs">retiro fallido</span></p>
+                        <p id="ui-alert-desc" class="text-xs text-red-500 mt-1 max-w-2xl leading-relaxed">
+                            El sistema no puede aprobar tu solicitud de retiro.<br>
+                            Existe un riesgo de seguridad en tu cuenta y la operación no está disponible temporalmente.
+                        </p>
+                    </div>
+                </div>
+                <button class="bg-[#0b2053] hover:bg-blue-900 text-white text-xs px-5 py-2.5 rounded-lg font-medium shadow-sm transition-colors">
+                    Entendido
+                </button>
+            </div>
+
+        </main>
+    </div>
+
+    <div id="control-panel" class="hidden fixed bottom-4 right-4 bg-gray-900 text-white p-6 rounded-2xl shadow-2xl border border-gray-700 w-96 max-h-[88vh] overflow-y-auto text-xs space-y-4 z-50">
+        <div class="flex items-center justify-between border-b border-gray-700 pb-3">
+            <h2 class="font-bold text-yellow-400 text-sm flex items-center gap-2">
+                <i class="fa-solid fa-sliders"></i> Live Control Panel
+            </h2>
+            <button onclick="toggleControlPanel()" class="text-gray-400 hover:text-white p-1"><i class="fa-solid fa-xmark text-base"></i></button>
+        </div>
+
+        <div class="space-y-4">
+
+            <div class="bg-gray-800 p-3.5 rounded-xl border border-gray-700 space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2 font-semibold text-blue-400">
+                        <i class="fa-regular fa-image"></i>
+                        <span>LOGO & BRANDING CONTROL</span>
+                    </div>
+                    <button onclick="resetLogo()" class="text-xs text-blue-400 hover:underline">Reset Default</button>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-300 mb-1 font-medium">စိတ်ကြိုက် ပုံထည့်ရန် (Upload or Image URL)</label>
+                    <div class="flex items-center gap-2">
+                        <label class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded cursor-pointer text-xs font-semibold flex items-center gap-1">
+                            Choose File
+                            <input type="file" id="input-logo-file" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
+                        </label>
+                        <span id="logo-file-name" class="text-gray-400 text-[11px] truncate max-w-[170px]">No file chosen</span>
+                    </div>
+                </div>
+
+                <div>
+                    <input type="text" id="input-logo-url" placeholder="သို့မဟုတ် ပုံ URL လင့်ခ်ထည့်ပါ (https://...)" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-1.5 text-white text-xs focus:outline-none focus:border-yellow-400" oninput="handleLogoUrlInput(this.value)">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-gray-400 mb-1 font-semibold">User Name</label>
+                <input type="text" id="input-username" value="Name" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:border-yellow-400" oninput="updateDashboard()">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-gray-400 mb-1 font-semibold">Retiros Totales</label>
+                    <input type="number" id="input-total" value="3" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:border-yellow-400" oninput="updateDashboard()">
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-1 font-semibold">Tiempo Límite</label>
+                    <input type="text" id="input-time" value="15 minutos" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:border-yellow-400" oninput="updateDashboard()">
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-3">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="font-semibold text-gray-300">Table Data Records</span>
+                    <button onclick="addRow()" class="bg-yellow-400 text-gray-900 px-2.5 py-1 rounded font-bold text-xs hover:bg-yellow-300 transition-colors">+ Add Row</button>
+                </div>
+                <div id="table-controls" class="space-y-2 max-h-40 overflow-y-auto pr-1">
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-3 space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="font-semibold text-gray-300">Alert Box Customization</span>
+                    <label class="flex items-center gap-1.5 cursor-pointer">
+                        <input type="checkbox" id="input-alert-show" checked onchange="updateDashboard()" class="rounded bg-gray-800 border-gray-700 text-yellow-400 focus:ring-0">
+                        <span class="text-gray-300 text-xs">Show Alert</span>
+                    </label>
+                </div>
+
+                <div>
+                    <label class="block text-gray-400 mb-1 font-semibold">Observación Text</label>
+                    <input type="text" id="input-alert-obs" value="retiro fallido" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-white text-xs focus:outline-none focus:border-yellow-400" oninput="updateDashboard()">
+                </div>
+
+                <div>
+                    <label class="block text-gray-400 mb-1 font-semibold">Alert Description</label>
+                    <textarea id="input-alert-desc" rows="3" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-1.5 text-white text-xs focus:outline-none focus:border-yellow-400" oninput="updateDashboard()">El sistema no puede aprobar tu solicitud de retiro. Existe un riesgo de seguridad en tu cuenta y la operación no está disponible temporalmente.</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const defaultLogoHTML = `
+            <div class="bg-white p-2 rounded-full border border-gray-300 shadow-sm">
+                <i class="fa-solid fa-handshake text-[#2d327d] text-2xl"></i>
+            </div>
+            <div class="flex flex-col leading-none">
+                <span class="text-white font-black text-xl tracking-tight drop-shadow-sm">MERCADO</span>
+                <span class="text-white font-black text-xl tracking-tight -mt-1 drop-shadow-sm">LIBRE</span>
+            </div>
+        `;
+
+        let tableData = [
+            { account: "1234567890", amount: "360.00", name: "Name", status: "Fallido" },
+            { account: "1234567890", amount: "360.00", name: "Name", status: "Fallido" },
+            { account: "1234567890", amount: "360.00", name: "Name", status: "Fallido" },
+            { account: "1234567890", amount: "360.00", name: "Name", status: "Exitoso" }
+        ];
+
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('logo-file-name').innerText = file.name;
+                document.getElementById('input-logo-url').value = '';
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    setLogoImage(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleLogoUrlInput(url) {
+            if (url.trim() !== '') {
+                document.getElementById('logo-file-name').innerText = 'URL Provided';
+                document.getElementById('input-logo-file').value = '';
+                setLogoImage(url);
+            }
+        }
+
+        function setLogoImage(src) {
+            const container = document.getElementById('ui-logo-container');
+            container.innerHTML = `
+                <img src="${src}" alt="Logo" class="h-14 object-contain max-w-[220px]">
+                <div class="flex flex-col leading-none">
+                    <span class="text-white font-black text-xl tracking-tight drop-shadow-sm">MERCADO</span>
+                    <span class="text-white font-black text-xl tracking-tight -mt-1 drop-shadow-sm">LIBRE</span>
+                </div>
+            `;
+        }
+
+        function resetLogo() {
+            document.getElementById('ui-logo-container').innerHTML = defaultLogoHTML;
+            document.getElementById('input-logo-file').value = '';
+            document.getElementById('input-logo-url').value = '';
+            document.getElementById('logo-file-name').innerText = 'No file chosen';
+        }
+
+        function renderTableControls() {
+            const container = document.getElementById('table-controls');
+            container.innerHTML = '';
+            
+            tableData.forEach((row, index) => {
+                const item = document.createElement('div');
+                item.className = 'flex items-center gap-1.5 bg-gray-800 p-2 rounded-lg border border-gray-700';
+                item.innerHTML = `
+                    <input type="text" value="${row.account}" class="w-20 bg-gray-900 border border-gray-700 rounded px-1.5 py-1 text-xs text-white" oninput="updateRow(${index}, 'account', this.value)">
+                    <input type="text" value="${row.amount}" class="w-16 bg-gray-900 border border-gray-700 rounded px-1.5 py-1 text-xs text-white" oninput="updateRow(${index}, 'amount', this.value)">
+                    <select onchange="updateRow(${index}, 'status', this.value)" class="bg-gray-900 border border-gray-700 rounded text-xs text-white p-1">
+                        <option value="Fallido" ${row.status === 'Fallido' ? 'selected' : ''}>Fallido</option>
+                        <option value="Exitoso" ${row.status === 'Exitoso' ? 'selected' : ''}>Exitoso</option>
+                    </select>
+                    <button onclick="deleteRow(${index})" class="text-red-400 hover:text-red-300 ml-auto px-1"><i class="fa-solid fa-xmark text-sm"></i></button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function updateRow(index, field, value) {
+            tableData[index][field] = value;
+            updateDashboard();
+        }
+
+        function addRow() {
+            tableData.push({ account: "1234567890", amount: "360.00", name: document.getElementById('input-username').value, status: "Fallido" });
+            renderTableControls();
+            updateDashboard();
+        }
+
+        function deleteRow(index) {
+            tableData.splice(index, 1);
+            renderTableControls();
+            updateDashboard();
+        }
+
+        function updateDashboard() {
+            const userName = document.getElementById('input-username').value;
+            document.getElementById('ui-user-name').innerText = userName;
+            document.getElementById('ui-total-withdrawals').innerText = document.getElementById('input-total').value;
+            document.getElementById('ui-time-limit').innerText = document.getElementById('input-time').value;
+
+            const tbody = document.getElementById('ui-table-body');
+            tbody.innerHTML = '';
+
+            tableData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-50 transition-colors";
+                
+                const isSuccess = row.status === 'Exitoso';
+                const badgeClass = isSuccess ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600';
+
+                tr.innerHTML = `
+                    <td class="p-4 pl-6 font-medium text-gray-900">${row.account}</td>
+                    <td class="p-4 text-gray-700">${row.amount}</td>
+                    <td class="p-4 text-gray-700">${userName}</td>
+                    <td class="p-4">
+                        <span class="px-3 py-1 text-xs font-semibold rounded-full ${badgeClass}">
+                            ${row.status}
+                        </span>
+                    </td>
+                    <td class="p-4 text-right pr-6">
+                        <a href="#" class="text-blue-600 hover:underline font-medium text-xs">Ver detalles</a>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('ui-pagination-info').innerText = `Mostrando 1 a ${tableData.length} de ${tableData.length} registros`;
+
+            const alertBox = document.getElementById('ui-alert-box');
+            const showAlert = document.getElementById('input-alert-show').checked;
+            
+            if (showAlert) {
+                alertBox.classList.remove('hidden');
+                document.getElementById('ui-alert-obs').innerText = document.getElementById('input-alert-obs').value;
+                document.getElementById('ui-alert-desc').innerText = document.getElementById('input-alert-desc').value;
+            } else {
+                alertBox.classList.add('hidden');
+            }
+        }
+
+        function toggleControlPanel() {
+            const panel = document.getElementById('control-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        renderTableControls();
+        updateDashboard();
+    </script>
+</body>
+</html>
