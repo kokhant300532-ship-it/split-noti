@@ -94,8 +94,8 @@
                 <div class="flex items-center gap-4">
                     <div class="relative w-80">
                         <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                        <!-- input နံပါတ်ရိုက်ထည့်ပါက အောက်ကဇယားပါ အလိုအလျောက်ပြောင်းလဲရန် oninput ထည့်သွင်းထားသည် -->
-                        <input type="text" id="ui-search" value="4493858051" class="w-full pl-9 pr-4 py-2 bg-white border border-gray-300 rounded-full text-sm focus:outline-none focus:border-blue-500" oninput="handleSearchAccountChange(this.value)">
+                        <!-- စာသား Font ကို Dashboard မူရင်း Font များနှင့် သဘာဝကျကျ တူညီအောင် ညှိထားပါသည် -->
+                        <input type="text" id="ui-search" value="7681105226" class="w-full pl-9 pr-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium text-gray-800 focus:outline-none focus:border-blue-500 tracking-normal" oninput="handleSearchAccountChange(this.value)">
                     </div>
                     <button class="bg-[#ffe600] hover:bg-yellow-400 text-gray-900 font-semibold px-4 py-2 rounded-lg text-sm flex items-center gap-2 shadow-sm">
                         <i class="fa-solid fa-download"></i> Exportar
@@ -176,6 +176,7 @@
         </main>
     </div>
 
+    <!-- Live Control Panel -->
     <div id="control-panel" class="hidden fixed bottom-4 right-4 bg-gray-900 text-white p-6 rounded-2xl shadow-2xl border border-gray-700 w-96 max-h-[88vh] overflow-y-auto text-xs space-y-4 z-50">
         <div class="flex items-center justify-between border-b border-gray-700 pb-3">
             <h2 class="font-bold text-yellow-400 text-sm flex items-center gap-2">
@@ -214,6 +215,12 @@
             <div>
                 <label class="block text-gray-400 mb-1 font-semibold">User Name</label>
                 <input type="text" id="input-username" value="Luis enrique cervantes Guevara" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:border-yellow-400" oninput="updateDashboard()">
+            </div>
+
+            <!-- အကောင့်နံပါတ်များအားလုံးကို တစ်ပြိုင်တည်း ပြောင်းလဲပေးနိုင်သော System/Input Box -->
+            <div class="bg-gray-800 p-3.5 rounded-xl border border-gray-700">
+                <label class="block text-yellow-400 mb-1 font-bold">Global Account Number (အကုန်ပြောင်းရန်)</label>
+                <input type="text" id="input-global-account" value="7681105226" class="w-full bg-gray-900 border border-yellow-500 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:ring-1 focus:ring-yellow-400" oninput="handleGlobalAccountChange(this.value)">
             </div>
 
             <div class="grid grid-cols-2 gap-3">
@@ -270,17 +277,20 @@
         `;
 
         let tableData = [
-            { account: "4493858051", amount: "14494.70", name: "Luis enrique cervantes Guevara", status: "Fallido" },
-            { account: "4493858051", amount: "16000.00", name: "Luis enrique cervantes Guevara", status: "Fallido" },
-            { account: "4493858051", amount: "250.00", name: "Luis enrique cervantes Guevara", status: "Exitoso" }
+            { amount: "14494.70", status: "Fallido" },
+            { amount: "16000.00", status: "Fallido" },
+            { amount: "250.00", status: "Exitoso" }
         ];
 
-        // ရှာဖွေရေးအကွက်တွင် ရိုက်ထည့်ပါက အကောင့်နံပါတ်များ အားလုံးကို လိုက်လံပြောင်းလဲပေးသည့် Function
-        function handleSearchAccountChange(newAccount) {
-            tableData.forEach(row => {
-                row.account = newAccount;
-            });
-            renderTableControls();
+        // Search Input မှ နံပါတ်ရိုက်ထည့်လျှင် Live Control Panel ပါ လိုက်ပြောင်းမည်
+        function handleSearchAccountChange(val) {
+            document.getElementById('input-global-account').value = val;
+            updateDashboard();
+        }
+
+        // Live Control Panel မှ Global Account Number ရိုက်ထည့်ပါက Search Input နှင့် Table အားလုံးပါ ပြိုင်တည်းပြောင်းမည်
+        function handleGlobalAccountChange(val) {
+            document.getElementById('ui-search').value = val;
             updateDashboard();
         }
 
@@ -329,10 +339,10 @@
             
             tableData.forEach((row, index) => {
                 const item = document.createElement('div');
-                item.className = 'flex items-center gap-1.5 bg-gray-800 p-2 rounded-lg border border-gray-700';
+                item.className = 'flex items-center gap-2 bg-gray-800 p-2 rounded-lg border border-gray-700';
                 item.innerHTML = `
-                    <input type="text" value="${row.account}" class="w-20 bg-gray-900 border border-gray-700 rounded px-1.5 py-1 text-xs text-white" oninput="updateRow(${index}, 'account', this.value)">
-                    <input type="text" value="${row.amount}" class="w-16 bg-gray-900 border border-gray-700 rounded px-1.5 py-1 text-xs text-white" oninput="updateRow(${index}, 'amount', this.value)">
+                    <span class="text-gray-400 text-xs font-medium">Row ${index + 1}</span>
+                    <input type="text" value="${row.amount}" class="w-24 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs text-white" oninput="updateRow(${index}, 'amount', this.value)">
                     <select onchange="updateRow(${index}, 'status', this.value)" class="bg-gray-900 border border-gray-700 rounded text-xs text-white p-1">
                         <option value="Fallido" ${row.status === 'Fallido' ? 'selected' : ''}>Fallido</option>
                         <option value="Exitoso" ${row.status === 'Exitoso' ? 'selected' : ''}>Exitoso</option>
@@ -349,11 +359,8 @@
         }
 
         function addRow() {
-            const currentSearchAccount = document.getElementById('ui-search').value;
             tableData.push({ 
-                account: currentSearchAccount || "4493858051", 
                 amount: "0.00", 
-                name: document.getElementById('input-username').value, 
                 status: "Fallido" 
             });
             renderTableControls();
@@ -368,6 +375,8 @@
 
         function updateDashboard() {
             const userName = document.getElementById('input-username').value;
+            const currentAccount = document.getElementById('ui-search').value;
+
             document.getElementById('ui-user-name').innerText = userName;
             document.getElementById('ui-total-withdrawals').innerText = document.getElementById('input-total').value;
             document.getElementById('ui-time-limit').innerText = document.getElementById('input-time').value;
@@ -383,7 +392,7 @@
                 const badgeClass = isSuccess ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600';
 
                 tr.innerHTML = `
-                    <td class="p-4 pl-6 font-medium text-gray-900">${row.account}</td>
+                    <td class="p-4 pl-6 font-medium text-gray-900">${currentAccount}</td>
                     <td class="p-4 text-gray-700">${row.amount}</td>
                     <td class="p-4 text-gray-700">${userName}</td>
                     <td class="p-4">
